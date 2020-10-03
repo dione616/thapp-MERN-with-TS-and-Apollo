@@ -3,6 +3,7 @@ export const typeDefs = gql`
   type Listing {
     id: ID
     title: String!
+    description: String!
     image: String!
     address: String!
     price: Int!

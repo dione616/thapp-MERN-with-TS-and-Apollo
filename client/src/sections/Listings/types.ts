@@ -1,5 +1,5 @@
-interface Listing {
-  _id: string
+export interface Listing {
+  id: string
   description: string
   title: string
   image: string

@@ -1,5 +1,5 @@
-import React, { useState } from "react"
-import { server } from "../../lib/api"
+import React from "react"
+import { server, useQuery } from "../../lib/api"
 import { DeleteListingData, DeleteListingVariables, ListingsData, Listing } from "./types"
 
 const LISTINGS = `
@@ -31,19 +31,16 @@ interface Props {
 }
 
 export const Listings: React.FC<Props> = ({ title }) => {
-  const [listings, setListings] = useState<Listing[] | null>(null)
-  const fetchListings = async () => {
-    const { data } = await server.fetch<ListingsData>({ query: LISTINGS })
+  const { data } = useQuery<ListingsData>(LISTINGS)
 
-    setListings(data.listings)
-  }
   const deleteListing = async (id: string) => {
     await server.fetch<DeleteListingData, DeleteListingVariables>({
       query: DELETE_LISTING,
       variables: { id },
     })
-    fetchListings()
   }
+
+  const listings = data ? data.listings : null
 
   const listingsList = listings
     ? listings.map((listing) => {
@@ -61,7 +58,6 @@ export const Listings: React.FC<Props> = ({ title }) => {
     <div className="">
       <h2>{title}</h2>
       <ul>{listingsList}</ul>
-      <button onClick={fetchListings}>Query Listings</button>
     </div>
   )
 }

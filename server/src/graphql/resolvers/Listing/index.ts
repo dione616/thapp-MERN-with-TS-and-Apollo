@@ -4,7 +4,11 @@ import { Database, Listing } from "../../../lib/types"
 
 export const listingResolvers: IResolvers = {
   Query: {
-    listings: async (_root: undefined, _args: {}, { db }: { db: Database }): Promise<Listing[]> => {
+    listings: async (
+      _root: undefined,
+      _args: {} /* Record<string, unknown> */,
+      { db }: { db: Database }
+    ): Promise<Listing[]> => {
       return await db.listings.find({}).toArray()
     },
   },

@@ -1,5 +1,5 @@
 import React from "react"
-import { server, useQuery } from "../../lib/api"
+import { useQuery, useMutation } from "../../lib/api"
 import { DeleteListingData, DeleteListingVariables, ListingsData, Listing } from "./types"
 
 const LISTINGS = `
@@ -33,11 +33,13 @@ interface Props {
 export const Listings: React.FC<Props> = ({ title }) => {
   const { data, loading, error, refetch } = useQuery<ListingsData>(LISTINGS)
 
-  const deleteListing = async (id: string) => {
-    await server.fetch<DeleteListingData, DeleteListingVariables>({
-      query: DELETE_LISTING,
-      variables: { id },
-    })
+  const [deleteListing, { loading: deleteListingLoading, error: deleteListingError }] = useMutation<
+    DeleteListingData,
+    DeleteListingVariables
+  >(DELETE_LISTING)
+
+  const handledeleteListing = async (id: string) => {
+    await deleteListing({ id })
 
     refetch()
   }
@@ -49,7 +51,7 @@ export const Listings: React.FC<Props> = ({ title }) => {
         return (
           <li key={listing.id}>
             {listing.title} <div>{listing.description}</div>
-            <button onClick={() => deleteListing(listing.id)}>Delete</button>
+            <button onClick={() => handledeleteListing(listing.id)}>Delete</button>
             <img style={{ width: "400px" }} src={listing.image} alt="image" />
           </li>
         )
@@ -63,10 +65,15 @@ export const Listings: React.FC<Props> = ({ title }) => {
     return <h2>Uh oh! Simething went wrong - try again later!</h2>
   }
 
+  const deleteListingLoadingMessage = deleteListingLoading ? <h4>Deleting in progress</h4> : null
+  const deleteListingLoadingError = deleteListingError ? <h4>Something went wrong during deleting :(</h4> : null
+
   return (
     <div className="">
       <h2>{title}</h2>
       <ul>{listingsList}</ul>
+      {deleteListingLoadingMessage}
+      {deleteListingLoadingError}
     </div>
   )
 }

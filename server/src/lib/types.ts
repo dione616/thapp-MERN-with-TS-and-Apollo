@@ -1,7 +1,7 @@
 import { Collection, ObjectId } from "mongodb"
 
 export enum ListingType {
-  Appartment = "APPARTMENT",
+  Apartment = "APARTMENT",
   Vaucher = "VAUCHER",
 }
 
@@ -31,6 +31,7 @@ export interface User {
   name: string
   avatar: string
   contact: string
+  admin: boolean
   walletId?: string
   income: number
   bookings: ObjectId[]

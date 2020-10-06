@@ -4,14 +4,13 @@ import * as serviceWorker from "./serviceWorker"
 import ApolloClient from "apollo-boost"
 import { ApolloProvider } from "react-apollo"
 import { Listings } from "./sections"
+import "./styles/index.css"
 
 const client = new ApolloClient({ uri: "/api" })
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <React.StrictMode>
-      <Listings title="Listings Props" />
-    </React.StrictMode>
+    <Listings title="Available Listings" />
   </ApolloProvider>,
   document.getElementById("root")
 )

@@ -502,7 +502,7 @@
   border: none;
   display: flex;
   align-items: center;
-  padding: 1px;
+  padding: 3px;
   color: #fff;
   cursor: pointer;
 }

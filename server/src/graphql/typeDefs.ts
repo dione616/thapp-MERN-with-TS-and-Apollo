@@ -4,8 +4,20 @@ export const typeDefs = gql`
     authUrl: String!
   }
 
+  type Viewer {
+    id: ID
+    token: String
+    avatar: String
+    hasWallet: Boolean
+    didRequest: Boolean!
+  }
+
+  input LogInInput {
+    code: String!
+  }
+
   type Mutation {
-    logIn: String!
-    logOut: String!
+    logIn(input: LogInInput): Viewer!
+    logOut: Viewer!
   }
 `

@@ -17,6 +17,7 @@
     "body-parser": "^1.19.0",
     "eslint": "^7.10.0",
     "express": "^4.17.1",
+    "googleapis": "^61.0.0",
     "graphql": "^15.3.0",
     "lodash.merge": "^4.6.2",
     "mongodb": "^3.6.2"

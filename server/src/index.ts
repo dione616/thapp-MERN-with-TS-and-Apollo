@@ -1,27 +1,26 @@
-require("dotenv").config()
-/* import dotenv from "dotenv"
-dotenv.config() */
+require("dotenv").config();
 
-import express, { Application } from "express"
-import { ApolloServer } from "apollo-server-express"
-import { connectDatabase } from "./database"
-import { typeDefs, resolvers } from "./graphql"
-import cookieParser from "cookie-parser"
-import { Response, Request } from "express"
+import express, { Application } from "express";
+import cookieParser from "cookie-parser";
+import { ApolloServer } from "apollo-server-express";
+import { connectDatabase } from "./database";
+import { typeDefs, resolvers } from "./graphql";
 
 const mount = async (app: Application) => {
-  const db = await connectDatabase() //connect db
+  const db = await connectDatabase();
 
-  app.use(cookieParser(process.env.SECRET))
+  app.use(cookieParser(process.env.SECRET));
 
-  const server = new ApolloServer({ typeDefs, resolvers, context: (req: Request, res: Response) => ({ db, req, res }) })
-  server.applyMiddleware({ app, path: "/api" }) //endpoint for graphql
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    context: ({ req, res }) => ({ db, req, res })
+  });
 
-  app.listen(process.env.PORT, () => {
-    console.log(`[app] : http://localhost:${process.env.PORT}`)
-  })
+  server.applyMiddleware({ app, path: "/api" });
+  app.listen(process.env.PORT);
 
-  /* const listings = await db.listings.find({}).toArray()
-  console.log(listings) */
-}
-mount(express())
+  console.log(`[app] : http://localhost:${process.env.PORT}`);
+};
+
+mount(express());

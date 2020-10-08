@@ -1,15 +1,28 @@
-import React, { useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import ReactDOM from "react-dom"
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
 import * as serviceWorker from "./serviceWorker"
 import ApolloClient from "apollo-boost"
-import { ApolloProvider } from "react-apollo"
+import { ApolloProvider, useMutation } from "react-apollo"
 import { Listings, Home, Host, Listing, Login, NotFound, User, AppHeader } from "./sections"
 import "./styles/index.css"
-import { Affix, Layout } from "antd"
+import { Affix, Layout, Spin } from "antd"
 import { Viewer } from "./lib/types"
+import { LOG_IN } from "./lib/graphql/mutations"
+import { LogIn as LogInData, LogInVariables } from "./lib/graphql/mutations/Login/__generated__/LogIn"
+import { AppHeaderSkeleton, ErrorBanner } from "./lib/components"
 
-const client = new ApolloClient({ uri: "/api" })
+const client = new ApolloClient({
+  uri: "/api",
+  request: async (operation) => {
+    const token = sessionStorage.getItem("token")
+    operation.setContext({
+      headers: {
+        "X-CSRF-TOKEN": token || "",
+      },
+    })
+  },
+})
 
 const initialViewer: Viewer = {
   id: null,
@@ -20,11 +33,45 @@ const initialViewer: Viewer = {
 }
 
 const App = () => {
+  console.log(sessionStorage.getItem("token"))
+
   const [viewer, setViewer] = useState<Viewer>(initialViewer)
+  const [logIn, { error }] = useMutation<LogInData, LogInVariables>(LOG_IN, {
+    onCompleted: (data) => {
+      if (data && data.logIn) {
+        setViewer(data.logIn)
+
+        if (data.logIn.token) {
+          sessionStorage.setItem("token", data.logIn.token)
+        } else {
+          sessionStorage.removeItem("token")
+        }
+      }
+    },
+  })
+
+  const logInRef = useRef(logIn)
+  useEffect(() => {
+    logInRef.current()
+  }, [])
+
+  if (!viewer.didRequest && !error) {
+    return (
+      <Layout className="app-skeleton">
+        <AppHeaderSkeleton />
+        <div className="app-skeleton__spin-section">
+          <Spin size="large" tip="Launching App" />
+        </div>
+      </Layout>
+    )
+  }
+
+  const logInErrorBannerElement = error ? <ErrorBanner description="Auth error on client!" /> : null
 
   return (
     <Router>
       <Layout id="app">
+        {logInErrorBannerElement}
         <Affix offsetTop={0} className="app__affix-header">
           <AppHeader viewer={viewer} setViewer={setViewer} />
         </Affix>

@@ -1,10 +1,11 @@
 import crypto from "crypto"
-import { Request, Response } from "express"
+import { Response, Request } from "express"
 import { IResolvers } from "apollo-server-express"
 import { Google } from "../../../lib/api"
 import { Viewer, Database, User } from "../../../lib/types"
 import { LogInArgs } from "./types"
 
+//prevent XCC and so on
 const cookieOptions = {
   httpOnly: true,
   sameSite: true,
@@ -74,6 +75,8 @@ const logInViaGoogle = async (code: string, token: string, db: Database, res: Re
     viewer = insertResult.ops[0]
   }
 
+  console.log(res)
+
   res.cookie("viewer", userId, {
     ...cookieOptions,
     maxAge: 365 * 24 * 60 * 60 * 1000,
@@ -89,7 +92,7 @@ const logInViaCookie = async (token: string, db: Database, req: Request, res: Re
     { returnOriginal: false }
   )
 
-  let viewer = updateRes.value
+  const viewer = updateRes.value
 
   if (!viewer) {
     res.clearCookie("viewer", cookieOptions)

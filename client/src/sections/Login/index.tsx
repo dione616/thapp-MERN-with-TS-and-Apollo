@@ -51,7 +51,7 @@ export const Login: React.FC<Props> = ({ setViewer }) => {
       })
       window.location.href = data.authUrl
     } catch (error) {
-      displayErrorMessage("Sorry! Wawern't able to log you in. Please try  again later!")
+      displayErrorMessage("Sorry. Wawern't able to log you in. Please try  again later!")
     }
   }
 

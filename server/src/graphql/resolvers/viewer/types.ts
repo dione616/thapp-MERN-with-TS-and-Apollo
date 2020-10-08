@@ -1,3 +1,3 @@
 export interface LogInArgs {
-  input: { code: string } | undefined
+  input: { code: string } | null;
 }

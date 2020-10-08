@@ -64,7 +64,7 @@ export const userResolvers: IResolvers = {
     },
     listings: async (
       user: User,
-      { limit, page }: UserBookingsArgs,
+      { limit, page }: UserListingsArgs,
       { db }: { db: Database }
     ): Promise<UserListingsData | null> => {
       try {

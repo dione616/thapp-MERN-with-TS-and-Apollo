@@ -52,11 +52,14 @@ export interface User {
   name: string
   avatar: string
   contact: string
+  seller: boolean
   walletId?: string
   income: number
   bookings: ObjectId[]
   listings: ObjectId[]
+  authorized?: boolean
 }
+//add seller prop to specify User
 
 export interface Database {
   bookings: Collection<Booking>

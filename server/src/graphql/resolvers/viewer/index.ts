@@ -65,6 +65,7 @@ const logInViaGoogle = async (code: string, token: string, db: Database, res: Re
       name: userName,
       avatar: userAvatar,
       contact: userEmail,
+      seller: false,
       income: 0,
       bookings: [],
       listings: [],

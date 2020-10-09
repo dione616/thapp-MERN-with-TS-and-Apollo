@@ -574,6 +574,13 @@
 .user-listings {
   padding-top: 40px;
 }
+.listing-card-wrapper {
+  width: 400px;
+}
+.ant-spin-container {
+  display: flex;
+  justify-content: center;
+}
 .user-listings__title.ant-typography {
   color: #1d226c;
   display: inline-block;

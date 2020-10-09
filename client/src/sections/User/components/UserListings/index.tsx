@@ -29,8 +29,10 @@ export const UserListings: React.FC<Props> = ({ userListings, limit, listingsPag
         onChange: (page: number) => setListingsPage(page),
       }}
       renderItem={(userListing) => (
-        <List.Item>
-          <ListingCard listing={userListing} />
+        <List.Item className="listing-card-wrapper">
+          <div>
+            <ListingCard listing={userListing} />
+          </div>
         </List.Item>
       )}
     />

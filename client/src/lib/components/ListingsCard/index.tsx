@@ -1,6 +1,8 @@
 import React from "react"
 import { Card, Typography } from "antd"
 import Icon from "@ant-design/icons"
+import { formatListingPrice } from "../../utils"
+import { Link } from "react-router-dom"
 
 interface Props {
   listing: {
@@ -16,28 +18,32 @@ interface Props {
 const { Text, Title } = Typography
 
 const ListingCard: React.FC<Props> = ({ listing }) => {
-  const { title, image, address, price, numOfGuests } = listing
+  const { id, title, image, address, price, numOfGuests } = listing
   return (
-    <Card className="listing-card__cover-img" hoverable cover={<div style={{ backgroundImage: `url(${image})` }} />}>
-      <div className="listing-card_details">
-        <div className="listing-card__description">
-          <Title level={4} className="listing-card__price">
-            {price}
-            <span>/day</span>
-          </Title>
-          <Text strong ellipsis className="listing-card__title">
-            {title}
-          </Text>
-          <Text strong ellipsis className="listing-card__address">
-            {address}
-          </Text>
+    <Link to={`/listing/${id}`}>
+      <Card hoverable cover={<div className="listing-card__cover-img" style={{ backgroundImage: `url(${image})` }} />}>
+        <div className="listing-card_details">
+          <div className="listing-card__description">
+            <Title level={4} className="listing-card__price">
+              {formatListingPrice(price)}
+              <span>/day</span>
+            </Title>
+            <Text strong ellipsis className="listing-card__title">
+              {title}
+            </Text>
+            <Text ellipsis className="listing-card__address">
+              {address}
+            </Text>
+          </div>
+          <div className="listing-card__dimensions listing-card__dimensions--guests">
+            <Icon type="user" />
+            <Text strong style={{ color: "#05c5ff" }}>
+              {numOfGuests} guests
+            </Text>
+          </div>
         </div>
-        <div className="listing-card__dimensions listing-card__dimensions--guests">
-          <Icon type="user" />
-          <Text>{numOfGuests} guests</Text>
-        </div>
-      </div>
-    </Card>
+      </Card>
+    </Link>
   )
 }
 

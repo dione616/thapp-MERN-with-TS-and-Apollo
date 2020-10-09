@@ -28,6 +28,7 @@ const initialViewer: Viewer = {
   id: null,
   token: null,
   avatar: null,
+  seller: false,
   hasWallet: null,
   didRequest: false,
 }
@@ -81,7 +82,7 @@ const App = () => {
           <Route exact path="/listing/:id" component={Listing} />
           <Route exact path="/listings/:location?" component={Listings} />
           //? means optional
-          <Route exact path="/user/:id" component={User} />
+          <Route exact path="/user/:id" render={(props) => <User {...props} viewer={viewer} />} />
           <Route exact path="/login" render={(props) => <Login {...props} setViewer={setViewer} />} />
           <Route component={NotFound} />
         </Switch>

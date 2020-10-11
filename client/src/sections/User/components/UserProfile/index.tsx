@@ -10,8 +10,6 @@ interface Props {
 const { Paragraph, Text, Title } = Typography
 
 const UserProfile: React.FC<Props> = ({ user, viewerIsUser }) => {
-  console.log(user)
-
   const additionalDetailsSection = viewerIsUser ? (
     <div>
       <Divider />

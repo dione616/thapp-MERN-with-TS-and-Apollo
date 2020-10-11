@@ -34,9 +34,8 @@ const initialViewer: Viewer = {
 }
 
 const App = () => {
-  console.log(sessionStorage.getItem("token"))
-
   const [viewer, setViewer] = useState<Viewer>(initialViewer)
+
   const [logIn, { error }] = useMutation<LogInData, LogInVariables>(LOG_IN, {
     onCompleted: (data) => {
       if (data && data.logIn) {

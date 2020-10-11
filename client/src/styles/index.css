@@ -117,7 +117,7 @@
   font-size: 13px;
 }
 .listing-card__dimensions span {
-  color: #bfbfbf;
+  color: #05c5ff;
 }
 .listing-card__dimensions--guests {
   float: right;
@@ -614,6 +614,14 @@
 .user {
   padding: 60px 120px;
 }
+.listingRow {
+  display: "flex";
+  justify-content: "space-between";
+}
+.icon {
+  color: "#05c5ff";
+}
+
 @media (max-width: 75em) {
   .user {
     padding-left: 20px;

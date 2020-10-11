@@ -1,6 +1,6 @@
 import React from "react"
 import { Card, Typography } from "antd"
-import Icon from "@ant-design/icons"
+import { UserOutlined } from "@ant-design/icons"
 import { formatListingPrice } from "../../utils"
 import { Link } from "react-router-dom"
 
@@ -36,7 +36,7 @@ const ListingCard: React.FC<Props> = ({ listing }) => {
             </Text>
           </div>
           <div className="listing-card__dimensions listing-card__dimensions--guests">
-            <Icon type="user" />
+            <UserOutlined className="icon" />
             <Text strong style={{ color: "#05c5ff" }}>
               {numOfGuests} guests
             </Text>

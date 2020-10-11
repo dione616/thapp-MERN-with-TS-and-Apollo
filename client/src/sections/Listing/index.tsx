@@ -4,7 +4,9 @@ import { LISTING } from "../../lib/graphql/queries"
 import { Listing as ListingData, ListingVariables } from "../../lib/graphql/queries/Listing/__generated__/Listing"
 import { RouteComponentProps } from "react-router-dom"
 import { PageSkeleton, ErrorBanner } from "../../lib/components"
-import { Layout } from "antd"
+import { Layout, Row, Col } from "antd"
+import { ListingDetails } from "./components/ListingDetails"
+import { ListingBookings } from "./components/ListingBookings"
 
 interface MatchParams {
   id: string
@@ -18,7 +20,7 @@ export const Listing = ({ match }: RouteComponentProps<MatchParams>) => {
     variables: {
       id: match.params.id,
       bookingsPage,
-      limit: 4,
+      limit: 3,
     },
   })
   if (loading) {
@@ -29,6 +31,8 @@ export const Listing = ({ match }: RouteComponentProps<MatchParams>) => {
     )
   }
   if (error) {
+    console.log(error)
+
     return (
       <Content className="listings">
         <ErrorBanner description="This list may not exits or has errro" />
@@ -38,5 +42,25 @@ export const Listing = ({ match }: RouteComponentProps<MatchParams>) => {
   }
   const listing = data ? data.listing : null
   const listingBookings = listing ? listing.bookings : null
-  return <div>Listing id {listing ? listing.id : null}</div>
+
+  const listingDetailsElement = listing ? <ListingDetails listing={listing} /> : null
+  const listingBookingsElement = listingBookings ? (
+    <ListingBookings
+      listingBookings={listingBookings}
+      bookingsPage={bookingsPage}
+      limit={4}
+      setBookingsPage={setBookingsPage}
+    />
+  ) : null
+  return (
+    <Content className="listings">
+      <Row gutter={24} style={{ display: "flex", justifyContent: "space-between" }}>
+        <Col xs={24} lg={14}>
+          {/* for xsmal 24cols for large 14cols */}
+          {listingDetailsElement}
+          {listingBookingsElement}
+        </Col>
+      </Row>
+    </Content>
+  )
 }

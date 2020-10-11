@@ -7,6 +7,11 @@
 // START Enums and Input Objects
 //==============================================================
 
+export enum ListingType {
+  APARTMENT = "APARTMENT",
+  VAUCHER = "VAUCHER",
+}
+
 export interface LogInInput {
   code: string;
 }

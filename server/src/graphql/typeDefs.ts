@@ -56,6 +56,7 @@ export const typeDefs = gql`
     avatar: String
     hasWallet: Boolean
     didRequest: Boolean!
+    seller: Boolean
   }
 
   input LogInInput {

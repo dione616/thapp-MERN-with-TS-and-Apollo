@@ -62,6 +62,7 @@ export const User = ({ viewer, match }: Props & RouteComponentProps<MatchParams>
   ) : null
 
   const userProfileElement = user ? <UserProfile user={user} viewerIsUser={viewerIsUser} /> : null
+
   return (
     <Content className="user">
       <Row gutter={12} /* type="flex" */ justify="space-between">

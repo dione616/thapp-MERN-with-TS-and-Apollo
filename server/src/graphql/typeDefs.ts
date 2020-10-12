@@ -1,4 +1,4 @@
-import { gql } from 'apollo-server-express'
+import { gql } from "apollo-server-express"
 
 export const typeDefs = gql`
   type Booking {
@@ -33,6 +33,7 @@ export const typeDefs = gql`
     type: ListingType!
     address: String!
     city: String!
+    country: String!
     bookings(limit: Int!, page: Int!): Bookings
     bookingsIndex: String!
     price: Int!

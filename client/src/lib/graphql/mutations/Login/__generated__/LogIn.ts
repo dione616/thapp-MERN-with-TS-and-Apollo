@@ -14,8 +14,8 @@ export interface LogIn_logIn {
   id: string | null
   token: string | null
   avatar: string | null
-  seller: boolean
   hasWallet: boolean | null
+  seller: boolean
   didRequest: boolean
 }
 

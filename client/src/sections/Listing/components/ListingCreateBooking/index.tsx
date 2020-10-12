@@ -2,9 +2,8 @@ import React from "react"
 import { Button, Card, Divider, Typography, DatePicker } from "antd"
 import { displayErrorMessage, formatListingPrice } from "../../../../lib/utils"
 import moment, { Moment } from "moment"
-import { isNullOrUndefined } from "util"
 
-const { Paragraph, Text, Title } = Typography
+const { Paragraph, Title } = Typography
 
 interface Props {
   price: number

@@ -12,6 +12,11 @@ export enum ListingType {
   VAUCHER = "VAUCHER",
 }
 
+export enum ListingsFilters {
+  PRICE_HIGHEST = "PRICE_HIGHEST",
+  PRICE_LOWEST = "PRICE_LOWEST",
+}
+
 export interface LogInInput {
   code: string;
 }

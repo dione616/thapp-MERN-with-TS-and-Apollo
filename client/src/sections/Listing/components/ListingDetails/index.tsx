@@ -20,7 +20,7 @@ export const ListingDetails = ({ listing }: Props) => {
         <Paragraph type="secondary" ellipsis className="listing-details__city-address">
           <Icon type="environment" />
           <HomeOutlined />
-          {city}
+          {city ? city : "Sumy"}
           <Divider type="vertical" />
           {address}
         </Paragraph>

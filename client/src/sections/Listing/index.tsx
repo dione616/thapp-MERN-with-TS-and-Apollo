@@ -35,7 +35,7 @@ export const Listing = ({ match }: RouteComponentProps<MatchParams>) => {
     )
   }
   if (error) {
-    console.log(error)
+    console.log(error, data)
 
     return (
       <Content className="listings">

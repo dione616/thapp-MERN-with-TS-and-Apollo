@@ -75,6 +75,8 @@ export const typeDefs = gql`
     image: String!
     type: ListingType!
     address: String!
+    city: String!
+    country: String!
     price: Int!
     numOfGuests: Int!
   }

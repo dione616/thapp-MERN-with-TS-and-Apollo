@@ -17,8 +17,20 @@ export enum ListingsFilters {
   PRICE_LOWEST = "PRICE_LOWEST",
 }
 
+export interface HostListingInput {
+  title: string
+  description: string
+  image: string
+  type: ListingType
+  address: string
+  city: string
+  country: string
+  price: number
+  numOfGuests: number
+}
+
 export interface LogInInput {
-  code: string;
+  code: string
 }
 
 //==============================================================

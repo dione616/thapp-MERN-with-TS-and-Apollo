@@ -38,7 +38,6 @@ export interface Listing {
   type: ListingType
   address: string
   country: string
-  admin: string
   city: string
   bookings: ObjectId[]
   bookingsIndex: BookingsIndexYear

@@ -1,16 +1,33 @@
-import { IResolvers } from 'apollo-server-express'
-import { Database, Listing, User } from '../../../lib/types'
+import { IResolvers } from "apollo-server-express"
+import { Database, Listing, ListingType, User } from "../../../lib/types"
 import {
+  HostListingArgs,
+  HostListingInput,
   ListingArgs,
   ListingBookingsArgs,
   ListingBookingsData,
   ListingsArgs,
   ListingsData,
   ListingsFilters,
-} from './types'
-import { ObjectId } from 'mongodb'
-import { authorize } from '../../../lib/utils'
-import { Request } from 'express'
+} from "./types"
+import { ObjectId } from "mongodb"
+import { authorize } from "../../../lib/utils"
+import { Request } from "express"
+
+const verifyHostListingInput = ({ title, description, type, price }: HostListingInput) => {
+  if (title.length > 50) {
+    throw new Error("Title must be under 50 chars!")
+  }
+  if (description.length > 500) {
+    throw new Error("Description must be under 500 chars!")
+  }
+  if (type !== ListingType.Apartment && type !== ListingType.House) {
+    throw new Error("ListingType wrong!")
+  }
+  if (price < 0) {
+    throw new Error("Price must be > 0")
+  }
+}
 
 export const listingResolvers: IResolvers = {
   Query: {
@@ -23,7 +40,7 @@ export const listingResolvers: IResolvers = {
         const listing = await db.listings.findOne({ _id: new ObjectId(id) })
 
         if (!listing) {
-          throw new Error('Listing not found in db')
+          throw new Error("Listing not found in db")
         }
 
         const viewer = await authorize(db, req)
@@ -69,15 +86,40 @@ export const listingResolvers: IResolvers = {
       }
     },
   },
+  Mutation: {
+    hostListing: async (
+      _root: undefined,
+      { input }: HostListingArgs,
+      { db, req }: { db: Database; req: Request }
+    ): Promise<Listing> => {
+      verifyHostListingInput(input)
+
+      let viewer = await authorize(db, req)
+
+      if (!viewer) {
+        throw new Error("Viewer not found!")
+      }
+
+      const insertResult = await db.listings.insertOne({
+        _id: new ObjectId(),
+        ...input,
+        bookings: [],
+        bookingsIndex: {},
+        host: viewer._id,
+      })
+
+      const insertedListing: Listing = insertResult.ops[0]
+
+      await db.users.updateOne({ _id: viewer._id }, { $push: { listings: insertedListing._id } })
+
+      return insertedListing
+    },
+  },
   Listing: {
     id: (listing: Listing): string => {
       return listing._id.toString()
     },
-    host: async (
-      listing: Listing,
-      _args: {},
-      { db }: { db: Database }
-    ): Promise<User> => {
+    host: async (listing: Listing, _args: {}, { db }: { db: Database }): Promise<User> => {
       const host = await db.users.findOne({ _id: listing.host })
       if (!host) {
         throw new Error(`host cant be found`)

@@ -69,6 +69,16 @@ export const typeDefs = gql`
     code: String!
   }
 
+  input HostListingInput {
+    title: String!
+    description: String!
+    image: String!
+    type: ListingType!
+    address: String!
+    price: Int!
+    numOfGuests: Int!
+  }
+
   type Query {
     authUrl: String!
     user(id: ID!): User!
@@ -79,5 +89,6 @@ export const typeDefs = gql`
   type Mutation {
     logIn(input: LogInInput): Viewer!
     logOut: Viewer!
+    hostListing(input: HostListingInput!): Listing!
   }
 `

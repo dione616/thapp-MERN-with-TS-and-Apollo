@@ -1,5 +1,5 @@
-import { Listing } from './../../../lib/types'
-import { Booking } from '../../../lib/types'
+import { Listing, ListingType } from "./../../../lib/types"
+import { Booking } from "../../../lib/types"
 export interface ListingArgs {
   id: string
 }
@@ -12,8 +12,8 @@ export interface ListingBookingsData {
   result: Booking[]
 }
 export enum ListingsFilters {
-  PRICE_LOWEST = 'PRICE_LOWEST',
-  PRICE_HIGHEST = 'PRICE_HIGHEST',
+  PRICE_LOWEST = "PRICE_LOWEST",
+  PRICE_HIGHEST = "PRICE_HIGHEST",
 }
 export interface ListingsArgs {
   filter: ListingsFilters
@@ -23,4 +23,18 @@ export interface ListingsArgs {
 export interface ListingsData {
   total: number
   result: Listing[]
+}
+export interface HostListingInput {
+  title: string
+  description: string
+  image: string
+  type: ListingType
+  address: string
+  price: number
+  city: string
+  country: string
+  numOfGuests: number
+}
+export interface HostListingArgs {
+  input: HostListingInput
 }

@@ -20,6 +20,9 @@ export interface BookingsIndexMonth {
 export interface BookingsIndexYear {
   [key: string]: BookingsIndexMonth
 }
+export interface BookingsIndex {
+  [key: string]: BookingsIndexYear
+}
 
 export interface Booking {
   _id: ObjectId
@@ -40,7 +43,7 @@ export interface Listing {
   country: string
   city: string
   bookings: ObjectId[]
-  bookingsIndex: BookingsIndexYear
+  bookingsIndex: BookingsIndex
   price: number
   numOfGuests: number
   authorized?: boolean

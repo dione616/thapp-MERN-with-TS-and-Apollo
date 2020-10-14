@@ -81,6 +81,12 @@ export const typeDefs = gql`
     numOfGuests: Int!
   }
 
+  input CreateBookingInput{
+    id:ID!
+    checkIn:String!
+    checkOut:String!
+  }
+
   type Query {
     authUrl: String!
     user(id: ID!): User!
@@ -92,5 +98,6 @@ export const typeDefs = gql`
     logIn(input: LogInInput): Viewer!
     logOut: Viewer!
     hostListing(input: HostListingInput!): Listing!
+    createBooking: (input:CreateBookingInput!):Booking
   }
 `

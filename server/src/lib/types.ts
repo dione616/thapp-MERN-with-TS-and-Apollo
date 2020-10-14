@@ -20,6 +20,7 @@ export interface BookingsIndexMonth {
 export interface BookingsIndexYear {
   [key: string]: BookingsIndexMonth
 }
+
 export interface BookingsIndex {
   [key: string]: BookingsIndexYear
 }

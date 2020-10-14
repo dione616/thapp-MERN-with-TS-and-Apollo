@@ -45,7 +45,7 @@ export const bookingResolvers: IResolvers = {
       _root: undefined,
       { input }: CreateBookingArgs,
       { db, req }: { db: Database; req: Request }
-    ): Promist<Booking> => {
+    ): Promise<Booking> => {
       try {
         //desctr fileds from input obj
         const { id, checkIn, checkOut } = input

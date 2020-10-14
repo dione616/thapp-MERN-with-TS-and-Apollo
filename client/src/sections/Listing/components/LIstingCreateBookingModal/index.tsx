@@ -1,36 +1,65 @@
 import React from "react"
 import { Button, Divider, Modal, Typography } from "antd"
 import moment, { Moment } from "moment"
-import { formatListingPrice } from "../../../../lib/utils"
+import { displayErrorMessage, displaySuccessNotification, formatListingPrice } from "../../../../lib/utils"
+import { CREATE_BOOKING } from "../../../../lib/graphql/mutations"
+import { useMutation } from "react-apollo"
+import {
+  CreateBooking as CreateBookingData,
+  CreateBookingVariables,
+} from "../../../../lib/graphql/mutations/CreateBooking/__generated__/CreateBooking"
 
 interface Props {
+  id: string
   price: number
   modalVisible: boolean
   checkInDate: Moment
   checkOutDate: Moment
   setModalVisible: (modalVisible: boolean) => void
+  clearBookingsData: () => void
+  handleListingRefetch: () => Promise<void>
 }
 
 const { Paragraph, Text, Title } = Typography
 
 export const ListingCreateBookingModal = ({
+  id,
   price,
   modalVisible,
   checkInDate,
   checkOutDate,
+  clearBookingsData,
+  handleListingRefetch,
   setModalVisible,
 }: Props) => {
+  const [createBooking, { loading }] = useMutation<CreateBookingData, CreateBookingVariables>(CREATE_BOOKING, {
+    onCompleted: () => {
+      clearBookingsData()
+      displaySuccessNotification(
+        "You've successfully booked the listing!",
+        "Booking history can always be found in your User page."
+      )
+      handleListingRefetch()
+    },
+    onError: () => {
+      displayErrorMessage("Sorry! We weren't able to successfully book the listing. Please try again later!")
+    },
+  })
   //calc duration and price
   const daysBooked = checkOutDate.diff(checkInDate, "days") + 1
   const totalPrice = price * daysBooked
-  /* const handleCreateBooking = async () => {
-    if (!stripe) {
-      return;
-    }
 
-    let { token: stripeToken } = await stripe.createToken();
-    console.log(stripeToken);
-  }; */
+  const handleCreateBooking = async () => {
+    createBooking({
+      variables: {
+        input: {
+          id,
+          checkIn: moment(checkInDate).format("YYYY-MM-DD"),
+          checkOut: moment(checkOutDate).format("YYYY-MM-DD"),
+        },
+      },
+    })
+  }
 
   return (
     <Modal visible={modalVisible} centered footer={null} onCancel={() => setModalVisible(false)}>
@@ -68,7 +97,7 @@ export const ListingCreateBookingModal = ({
         <Divider />
 
         <div className="listing-booking-modal__stripe-card-section">
-          <Button size="large" type="primary" className="listing-booking-modal__cta">
+          <Button size="large" type="primary" className="listing-booking-modal__cta" onClick={handleCreateBooking}>
             Book
           </Button>
         </div>

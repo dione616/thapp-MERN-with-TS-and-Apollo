@@ -11,6 +11,7 @@ import { Viewer } from "./lib/types"
 import { LOG_IN } from "./lib/graphql/mutations"
 import { LogIn as LogInData, LogInVariables } from "./lib/graphql/mutations/Login/__generated__/LogIn"
 import { AppHeaderSkeleton, ErrorBanner } from "./lib/components"
+import { Report } from "./sections/Report"
 
 const client = new ApolloClient({
   uri: "/api",
@@ -83,6 +84,7 @@ const App = () => {
           //? means optional
           <Route exact path="/user/:id" render={(props) => <User {...props} viewer={viewer} />} />
           <Route exact path="/login" render={(props) => <Login {...props} setViewer={setViewer} />} />
+          <Route exact path="/report" render={(props) => <Report {...props} viewer={viewer} />} />
           <Route component={NotFound} />
         </Switch>
       </Layout>

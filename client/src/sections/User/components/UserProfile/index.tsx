@@ -16,19 +16,7 @@ const UserProfile: React.FC<Props> = ({ user, viewerIsUser }) => {
       <div className="user_profile__details">
         <Title>Additional Details</Title>
       </div>
-      <Paragraph>To become a Seller click here</Paragraph>
-      <Button type="primary" className="user-profile__details-cta">
-        Become
-      </Button>
-      <Button type="primary" className="user-profile__details-cta">
-        Stripe
-      </Button>
-      <Paragraph type="secondary">
-        We use{" "}
-        <a href="https://stripe.com/en-US/connect" target="_blank" rel="noopener noreferrer">
-          Stripe
-        </a>
-      </Paragraph>
+      <Paragraph>You'r the seller! Now you can host your own listing!</Paragraph>
     </div>
   ) : null
 

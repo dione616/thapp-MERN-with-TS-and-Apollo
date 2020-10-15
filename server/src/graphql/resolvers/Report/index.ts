@@ -4,7 +4,7 @@ import { GenReportInput } from "./types"
 
 export const reportResolvers: IResolvers = {
   Query: {
-    genReport: async (_root: undefined, { checkIn, checkOut }, { db }: { db: Database }): Promise<Booking[]> => {
+    genReport: async (_root: undefined, { checkIn, checkOut }, { db }: { db: Database }): Promise<Listing[]> => {
       try {
         //{ $or: [{ checkIn }, { checkOut }] }
         //{$where:()=>{return ($or: [{ checkIn }, { checkOut }])}}
@@ -28,10 +28,7 @@ export const reportResolvers: IResolvers = {
           })
           .toArray()
 
-        console.log(bIds)
-        console.log("AVLI:", availableListings)
-
-        return excludedBookings
+        return availableListings
       } catch (error) {
         throw new Error("Cant gen report")
       }

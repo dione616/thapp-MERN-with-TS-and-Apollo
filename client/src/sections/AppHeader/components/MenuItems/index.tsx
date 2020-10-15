@@ -42,6 +42,12 @@ export const MenuItems: React.FC<Props> = ({ viewer, setViewer }) => {
             Profile
           </Link>
         </Item>
+        <Item key="/user">
+          <Link to={`/report`}>
+            <Icon type="user" />
+            Report
+          </Link>
+        </Item>
         <Item key="/logout">
           <div onClick={hanldeLogOut}>
             <Icon type="logout" />

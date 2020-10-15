@@ -3,7 +3,7 @@ import { Database, Listing, Booking } from "../../../lib/types"
 import { GenReportInput } from "./types"
 
 export const reportResolvers: IResolvers = {
-  Query: {
+  Mutation: {
     genReport: async (_root: undefined, { checkIn, checkOut }, { db }: { db: Database }): Promise<Listing[]> => {
       try {
         //{ $or: [{ checkIn }, { checkOut }] }

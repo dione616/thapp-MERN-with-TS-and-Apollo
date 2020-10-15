@@ -16,7 +16,12 @@ export const AppHeader: React.FC<Props> = ({ viewer, setViewer }) => {
     <Header className="app-header">
       <div className="app-header__logo-search-section">
         <div className="app-header__logo">
-          <Link to="/">Logo</Link>
+          <Link to="/">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Google_Lens_-_new_logo.png/600px-Google_Lens_-_new_logo.png"
+              alt="logo"
+            />
+          </Link>
         </div>
       </div>
       <div className="app-header__menu_section">

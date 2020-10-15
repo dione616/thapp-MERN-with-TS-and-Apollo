@@ -9,11 +9,13 @@ interface Props {
 }
 
 export const ListingsPagination = ({ total, page, limit, setPage }: Props) => {
+  console.log(total, page, limit)
+
   return (
     <Pagination
       current={page}
       total={total}
-      defaultPageSize={limit}
+      defaultPageSize={10}
       showLessItems
       onChange={(page: number) => setPage(page)}
       className="listings-pagination"

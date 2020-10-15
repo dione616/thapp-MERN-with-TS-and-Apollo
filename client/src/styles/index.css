@@ -209,12 +209,7 @@
   background-repeat: no-repeat;
   background-position: 10% 0;
 }
-@media (max-width: 75em) {
-  .home {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-}
+
 .home__cta-section {
   padding: 40px 0;
   max-width: 700px;
@@ -257,6 +252,11 @@
 
 .ant-picker-cell-disabled::before {
   background: #ffb7b7;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
 }
 @media (max-width: 62em) {
   .host-content {
@@ -433,12 +433,7 @@
 .listing {
   padding: 60px 120px;
 }
-@media (max-width: 75em) {
-  .listing {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-}
+
 .listings-filters {
   padding: 10px 0;
   background: #fff;
@@ -468,12 +463,7 @@
 .listings {
   padding: 60px 120px;
 }
-@media (max-width: 75em) {
-  .listings {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-}
+
 .listings--none .ant-typography {
   font-size: 15px;
 }
@@ -626,12 +616,12 @@
   color: "#05c5ff";
 }
 
-@media (max-width: 75em) {
+/* @media (max-width: 75em) {
   .user {
     padding-left: 20px;
     padding-right: 20px;
   }
-}
+} */
 html {
   overflow: auto;
 }
@@ -669,5 +659,29 @@ html {
 @media (max-width: 36em) {
   .app__affix-footer {
     display: none;
+  }
+}
+@media (max-width: 550px) {
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 10px;
+  }
+}
+@media (min-width: 551px) and (max-width: 650px) {
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5px;
+  }
+  .ant-list-item {
+    overflow: hidden;
+    max-width: 300px;
+  }
+  .ant-list-item a {
+    max-width: 300px;
+  }
+  .listings {
+    padding: 0 0 0 0;
   }
 }

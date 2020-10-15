@@ -96,7 +96,6 @@ export const typeDefs = gql`
     user(id: ID!): User!
     listing(id: ID!): Listing!
     listings(filter: ListingsFilters!, limit: Int!, page: Int!): Listings!
-    genReport(checkIn: String, checkOut: String): [Listing]
   }
 
   type Mutation {
@@ -104,5 +103,6 @@ export const typeDefs = gql`
     logOut: Viewer!
     hostListing(input: HostListingInput!): Listing!
     createBooking(input: CreateBookingInput!): Booking!
+    genReport(checkIn: String, checkOut: String): [Listing]
   }
 `

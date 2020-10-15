@@ -86,12 +86,17 @@ export const typeDefs = gql`
     checkIn: String!
     checkOut: String!
   }
+  input GenReportInput {
+    checkIn: String!
+    checkOut: String!
+  }
 
   type Query {
     authUrl: String!
     user(id: ID!): User!
     listing(id: ID!): Listing!
     listings(filter: ListingsFilters!, limit: Int!, page: Int!): Listings!
+    genReport(checkIn: String, checkOut: String): [Booking]
   }
 
   type Mutation {

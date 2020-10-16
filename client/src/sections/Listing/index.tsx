@@ -1,16 +1,36 @@
 import React, { useState } from "react"
-import { useQuery } from "react-apollo"
+import { useMutation, useQuery } from "react-apollo"
 import { LISTING } from "../../lib/graphql/queries"
 import { Listing as ListingData, ListingVariables } from "../../lib/graphql/queries/Listing/__generated__/Listing"
-import { RouteComponentProps } from "react-router-dom"
+import {
+  EditListing as EditListingData,
+  EditListingVariables,
+} from "../../lib/graphql/mutations/EditListing/__generated__/EditListing"
+import { EDIT_LISTING } from "../../lib/graphql/mutations/EditListing"
+import { Redirect, RouteComponentProps } from "react-router-dom"
 import { PageSkeleton, ErrorBanner } from "../../lib/components"
-import { Layout, Row, Col } from "antd"
+import {
+  Button,
+  Form,
+  Input,
+  Card,
+  Divider,
+  Typography,
+  DatePicker,
+  List,
+  Layout,
+  Row,
+  Col,
+  InputNumber,
+  Radio,
+} from "antd"
 import { ListingDetails } from "./components/ListingDetails"
 import { ListingBookings } from "./components/ListingBookings"
 import { ListingCreateBooking } from "./components/ListingCreateBooking"
 import { Moment } from "moment"
 import { Viewer } from "../../lib/types"
 import { ListingCreateBookingModal } from "./components/LIstingCreateBookingModal"
+import { displayErrorMessage, displaySuccessNotification } from "../../lib/utils"
 
 interface MatchParams {
   id: string
@@ -20,6 +40,8 @@ interface Props {
 }
 
 const { Content } = Layout
+const { Paragraph, Title, Text } = Typography
+const { Item } = Form
 
 export const Listing = ({ viewer, match }: Props & RouteComponentProps<MatchParams>) => {
   const [bookingsPage, setBookingsPage] = useState(1)
@@ -34,6 +56,38 @@ export const Listing = ({ viewer, match }: Props & RouteComponentProps<MatchPara
     },
   })
 
+  const [editListing, loadingData] = useMutation<EditListingData, EditListingVariables>(EDIT_LISTING, {
+    onError: () => {
+      displayErrorMessage("Sorry we cant edit listing! Try again later.")
+    },
+    onCompleted: () => {
+      displaySuccessNotification("You've successfully edited your listing!")
+    },
+  })
+
+  const handleEditListing = (event: any) => {
+    console.log(event)
+
+    let values = event
+
+    const id = data?.listing.id
+    const input = {
+      ...values,
+      price: values.price * 100,
+      id,
+    }
+
+    editListing({
+      variables: {
+        input,
+      },
+    })
+  }
+
+  if (loadingData.data && loadingData.data.editListing) {
+    return <Redirect to="/" />
+  }
+
   const handleListingRefetch = async () => {
     await refetch()
   }
@@ -43,6 +97,7 @@ export const Listing = ({ viewer, match }: Props & RouteComponentProps<MatchPara
     setCheckInDate(null)
     setCheckOutDate(null)
   }
+
   if (loading) {
     return (
       <Content className="listings">
@@ -60,6 +115,7 @@ export const Listing = ({ viewer, match }: Props & RouteComponentProps<MatchPara
       </Content>
     )
   }
+
   const listing = data ? data.listing : null
   const listingBookings = listing ? listing.bookings : null
 
@@ -115,6 +171,101 @@ export const Listing = ({ viewer, match }: Props & RouteComponentProps<MatchPara
         </Col>
       </Row>
       {listingCBME}
+      {viewer.id ? (
+        <Form layout="vertical" onFinish={handleEditListing}>
+          <div className="host__form-header">
+            <Title level={3} className="host__form-title">
+              Edit listing
+            </Title>
+            <Text type="secondary">
+              In this form, we'll collect some basic and additional information about your listing.
+            </Text>
+          </div>
+
+          <Item
+            label="Home Type"
+            name="type"
+            rules={[{ required: true, message: "Plesse enter max number of guests!" }]}
+          >
+            <Radio.Group>
+              <Radio.Button value="APARTMENT">
+                <span>Apartment</span>
+              </Radio.Button>
+              <Radio.Button value="HOUSE">
+                <span>House</span>
+              </Radio.Button>
+            </Radio.Group>
+          </Item>
+
+          <Item
+            label="Max num of Guests"
+            name="numOfGuests"
+            rules={[{ required: true, message: "Plesse enter max number of guests!" }]}
+          >
+            <InputNumber min={1} placeholder="4" />
+          </Item>
+
+          <Item
+            label="Title"
+            extra="Max character count of 45"
+            name="title"
+            rules={[{ required: true, message: "Plesse enter title!" }]}
+          >
+            <Input maxLength={45} placeholder="The iconic and luxurious Bel-Air mansion" />
+          </Item>
+
+          <Item
+            label="Description of listing"
+            extra="Max character count of 400"
+            name="description"
+            rules={[{ required: true, message: "Plesse enterDescription!" }]}
+          >
+            <Input.TextArea
+              rows={3}
+              maxLength={400}
+              placeholder="Modern, clean, and iconic home of the Fresh Prince. Situated in the heart of Bel-Air, Los Angeles."
+            />
+          </Item>
+
+          <Item label="Address" name="address" rules={[{ required: true, message: "Plesse enter address!" }]}>
+            <Input placeholder="251 North Bristol Avenue" />
+          </Item>
+
+          <Item label="City/Town" name="city" rules={[{ required: true, message: "Plesse enter city" }]}>
+            <Input placeholder="Los Angeles" />
+          </Item>
+
+          <Item label="Country" name="country" rules={[{ required: true, message: "Plesse enter country" }]}>
+            <Input placeholder="USA" />
+          </Item>
+
+          <Item
+            label="Image"
+            extra="Images have to be under 1MB in size and of type JPG or PNG"
+            name="image"
+            rules={[{ required: true, message: "Plesse enter image url!" }]}
+          >
+            <div className="host__form-image-upload">
+              <Input placeholder="Please enter a zip code for your listing!" />
+            </div>
+          </Item>
+
+          <Item
+            label="Price"
+            extra="All prices in $USD/day"
+            name="price"
+            rules={[{ required: true, message: "Plesse enter price" }]}
+          >
+            <InputNumber min={0} placeholder="120" />
+          </Item>
+
+          <Item>
+            <Button type="primary" htmlType="submit">
+              Submit
+            </Button>
+          </Item>
+        </Form>
+      ) : null}
     </Content>
   )
 }

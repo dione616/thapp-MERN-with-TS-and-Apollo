@@ -1,6 +1,7 @@
 import { IResolvers } from "apollo-server-express"
 import { Database, Listing, ListingType, User } from "../../../lib/types"
 import {
+  EditListingArgs,
   HostListingArgs,
   HostListingInput,
   ListingArgs,
@@ -113,6 +114,63 @@ export const listingResolvers: IResolvers = {
       await db.users.updateOne({ _id: viewer._id }, { $push: { listings: insertedListing._id } })
 
       return insertedListing
+    },
+    deleteListing: async (
+      _root,
+      { id }: { id: string },
+      { db, req }: { db: Database; req: Request }
+    ): Promise<boolean> => {
+      try {
+        const viewer = await authorize(db, req)
+
+        if (!viewer) {
+          throw new Error("You'r not allowed to do that!")
+        }
+
+        //delete listing by id where viewer is host!
+        const deletedListing = await db.listings.findOneAndDelete({ _id: new ObjectId(id), host: viewer._id })
+        if (!deletedListing.value) {
+          throw new Error("You'r not allowed to do that!")
+        }
+        //still need to remove from user listings and bookings
+
+        return true
+      } catch (error) {
+        throw new Error(`Error during deleting: ${error}`)
+      }
+    },
+    editListing: async (
+      _root,
+      { input }: { input: EditListingArgs },
+      { db, req }: { db: Database; req: Request }
+    ): Promise<Listing | undefined> => {
+      const { id } = input
+      try {
+        const viewer = await authorize(db, req)
+
+        if (!viewer) {
+          throw new Error("You'r not allowed to do that!")
+        }
+
+        const updatedListing = await db.listings.findOneAndUpdate(
+          { _id: new ObjectId(id), host: viewer._id },
+          {
+            $set: {
+              _id: new ObjectId(id),
+              ...input,
+            },
+          },
+          { returnOriginal: false }
+        )
+        if (!updatedListing.value) {
+          throw new Error("You'r not  allowed to do that!")
+        }
+        //still need to update in user listings and bookings
+
+        return updatedListing.value
+      } catch (error) {
+        throw new Error(`Error during editing: ${error}`)
+      }
     },
   },
   Listing: {

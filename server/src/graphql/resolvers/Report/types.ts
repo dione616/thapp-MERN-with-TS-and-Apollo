@@ -1,6 +1,6 @@
 export interface ReportArgs {
   checkIn: string
-  checkOut: strin
+  checkOut: string
 }
 
 export interface GenReportInput {

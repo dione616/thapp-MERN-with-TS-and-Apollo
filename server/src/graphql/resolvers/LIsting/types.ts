@@ -38,3 +38,19 @@ export interface HostListingInput {
 export interface HostListingArgs {
   input: HostListingInput
 }
+export interface CreateBookingInput {
+  listing: Listing
+}
+
+export interface EditListingArgs {
+  id: string
+  title: string
+  description: string
+  image: string
+  type: ListingType
+  address: string
+  price: number
+  city: string
+  country: string
+  numOfGuests: number
+}

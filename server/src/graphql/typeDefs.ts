@@ -97,11 +97,25 @@ export const typeDefs = gql`
     listing(id: ID!): Listing!
     listings(filter: ListingsFilters!, limit: Int!, page: Int!): Listings!
   }
+  input EditListingInput {
+    id: String!
+    title: String!
+    description: String!
+    image: String!
+    type: ListingType!
+    address: String!
+    city: String!
+    country: String!
+    price: Int!
+    numOfGuests: Int!
+  }
 
   type Mutation {
     logIn(input: LogInInput): Viewer!
     logOut: Viewer!
     hostListing(input: HostListingInput!): Listing!
+    deleteListing(id: String!): Boolean!
+    editListing(input: EditListingInput): Listing
     createBooking(input: CreateBookingInput!): Booking!
     genReport(checkIn: String, checkOut: String): [Listing]
   }

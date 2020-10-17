@@ -6,6 +6,10 @@ import {
   EditListing as EditListingData,
   EditListingVariables,
 } from "../../lib/graphql/mutations/EditListing/__generated__/EditListing"
+import {
+  DeleteListing as DeleteListingData,
+  DeleteListingVariables,
+} from "../../lib/graphql/mutations/DeleteListing/__generated__/DeleteListing"
 import { EDIT_LISTING } from "../../lib/graphql/mutations/EditListing"
 import { Redirect, RouteComponentProps } from "react-router-dom"
 import { PageSkeleton, ErrorBanner } from "../../lib/components"
@@ -31,6 +35,7 @@ import { Moment } from "moment"
 import { Viewer } from "../../lib/types"
 import { ListingCreateBookingModal } from "./components/LIstingCreateBookingModal"
 import { displayErrorMessage, displaySuccessNotification } from "../../lib/utils"
+import { DELETE_LISTING } from "../../lib/graphql/mutations/DeleteListing"
 
 interface MatchParams {
   id: string
@@ -65,6 +70,15 @@ export const Listing = ({ viewer, match }: Props & RouteComponentProps<MatchPara
     },
   })
 
+  const [deleteListing, loadingDeleteData] = useMutation<DeleteListingData, DeleteListingVariables>(DELETE_LISTING, {
+    onError: () => {
+      displayErrorMessage("Sorry we cant delete listing!Refresh your page or try again later.")
+    },
+    onCompleted: () => {
+      displaySuccessNotification("You've successfully deleted your listing!")
+    },
+  })
+
   const handleEditListing = (event: any) => {
     console.log(event)
 
@@ -82,6 +96,16 @@ export const Listing = ({ viewer, match }: Props & RouteComponentProps<MatchPara
         input,
       },
     })
+  }
+
+  const handleDelete = () => {
+    if (data?.listing.id) {
+      deleteListing({
+        variables: {
+          id: data?.listing.id,
+        },
+      })
+    }
   }
 
   if (loadingData.data && loadingData.data.editListing) {
@@ -266,6 +290,9 @@ export const Listing = ({ viewer, match }: Props & RouteComponentProps<MatchPara
           </Item>
         </Form>
       ) : null}
+      <Button type="primary" htmlType="submit" onClick={handleDelete}>
+        Delete Listing
+      </Button>
     </Content>
   )
 }

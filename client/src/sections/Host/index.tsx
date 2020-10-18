@@ -57,8 +57,6 @@ export const Host = ({ viewer }: Props) => {
   }
 
   const handleHostListing = (event: any) => {
-    console.log(event)
-
     let values = event
 
     const input = {

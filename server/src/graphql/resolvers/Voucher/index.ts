@@ -73,7 +73,7 @@ export const voucherResolvers: IResolvers = {
         throw new Error(`Error during deleting voucher: ${error}`)
       }
     },
-    editVaucher: async (
+    editVoucher: async (
       _root,
       { input }: { input: EditVoucherArgs },
       { db, req }: { db: Database; req: Request }

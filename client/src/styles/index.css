@@ -210,6 +210,15 @@
   background-position: 10% 0;
 }
 
+.voucher-menu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 38px 0px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
 .home__cta-section {
   padding: 40px 0;
   max-width: 700px;

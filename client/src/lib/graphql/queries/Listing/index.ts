@@ -32,6 +32,14 @@ export const LISTING = gql`
       bookingsIndex
       price
       numOfGuests
+      voucher {
+        id
+        title
+        description
+        price
+        quantity
+        type
+      }
     }
   }
 `

@@ -17,10 +17,26 @@ export enum ListingsFilters {
   PRICE_LOWEST = "PRICE_LOWEST",
 }
 
+export enum VoucherType {
+  CINEMA = "CINEMA",
+  CLUB = "CLUB",
+  MUSEUM = "MUSEUM",
+  RESTAURANT = "RESTAURANT",
+}
+
 export interface CreateBookingInput {
   id: string;
   checkIn: string;
   checkOut: string;
+}
+
+export interface CreateVoucherInput {
+  title: string;
+  description: string;
+  image: string;
+  price: number;
+  type: VoucherType;
+  quantity: number;
 }
 
 export interface EditListingInput {
@@ -34,6 +50,17 @@ export interface EditListingInput {
   country: string;
   price: number;
   numOfGuests: number;
+  voucher?: string | null;
+}
+
+export interface EditVoucherInput {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  price: number;
+  type: VoucherType;
+  quantity: number;
 }
 
 export interface HostListingInput {
@@ -46,6 +73,7 @@ export interface HostListingInput {
   country: string;
   price: number;
   numOfGuests: number;
+  voucher: string;
 }
 
 export interface LogInInput {

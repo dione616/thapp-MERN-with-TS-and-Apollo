@@ -158,6 +158,6 @@ export const typeDefs = gql`
     genReport(checkIn: String, checkOut: String): [Listing]
     createVoucher(input: CreateVoucherInput!): Boolean
     deleteVoucher(id: String!): Boolean!
-    editVaucher(input: EditVoucherInput): Voucher
+    editVoucher(input: EditVoucherInput): Voucher
   }
 `

@@ -51,7 +51,7 @@ export const bookingResolvers: IResolvers = {
         const { id, checkIn, checkOut } = input
 
         //verify a logged user is making req
-        let viewer = await authorize(db, req)
+        const viewer = await authorize(db, req)
 
         if (!viewer) {
           throw new Error("User cant be found!")

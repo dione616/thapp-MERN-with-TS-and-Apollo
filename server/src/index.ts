@@ -9,9 +9,9 @@ const mount = async (app: Application) => {
   const db = await connectDatabase()
 
   app.use(cookieParser(process.env.SECRET))
-  /* app.use(compression())
+  /* app.use(compression()) */
 
-  app.use(express.static(`${__dirname}/client`))
+  /* app.use(express.static(`${__dirname}/client`))
   app.get("/*", (_req, res) => res.sendFile(`${__dirname}/client/index.html`)) */
 
   const server = new ApolloServer({

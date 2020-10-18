@@ -1,5 +1,5 @@
 import { IResolvers } from "apollo-server-express"
-import { Database, Listing, ListingType, User } from "../../../lib/types"
+import { Database, Listing, ListingType, User, Voucher } from "../../../lib/types"
 import {
   EditListingArgs,
   HostListingArgs,
@@ -95,7 +95,7 @@ export const listingResolvers: IResolvers = {
     ): Promise<Listing> => {
       verifyHostListingInput(input)
 
-      let viewer = await authorize(db, req)
+      const viewer = await authorize(db, req)
 
       if (!viewer) {
         throw new Error("Viewer not found!")
@@ -107,6 +107,7 @@ export const listingResolvers: IResolvers = {
         bookings: [],
         bookingsIndex: {},
         host: viewer._id,
+        voucher: new ObjectId(input.voucher),
       })
 
       const insertedListing: Listing = insertResult.ops[0]
@@ -144,7 +145,7 @@ export const listingResolvers: IResolvers = {
       { input }: { input: EditListingArgs },
       { db, req }: { db: Database; req: Request }
     ): Promise<Listing | undefined> => {
-      const { id } = input
+      const { id, ...otherArgs } = input
       try {
         const viewer = await authorize(db, req)
 
@@ -157,7 +158,8 @@ export const listingResolvers: IResolvers = {
           {
             $set: {
               _id: new ObjectId(id),
-              ...input,
+              ...otherArgs,
+              voucher: new ObjectId(input.voucher),
             },
           },
           { returnOriginal: false }
@@ -184,6 +186,14 @@ export const listingResolvers: IResolvers = {
       }
 
       return host
+    },
+    voucher: async (listing: Listing, _args: {}, { db }: { db: Database }): Promise<Voucher> => {
+      const voucher = await db.vouchers.findOne({ _id: listing.voucher })
+      if (!voucher) {
+        throw new Error(`voucher cant be found`)
+      }
+
+      return voucher
     },
     bookingsIndex: (listing: Listing): string => {
       return JSON.stringify(listing.bookingsIndex)

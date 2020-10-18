@@ -1,8 +1,8 @@
-require('dotenv').config()
-import { MongoClient } from 'mongodb'
-import { Database, User, Listing, Booking } from '../lib/types'
+require("dotenv").config()
+import { MongoClient } from "mongodb"
+import { Database, User, Listing, Booking, Voucher } from "../lib/types"
 
-const url = ` mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.n5ags.mongodb.net/<dbname>?retryWrites=true&w=majority`
+const url = ` mongodb+srv://user_001:GB9lsFIYkMMr4tGF@cluster0.n5ags.mongodb.net/<dbname>?retryWrites=true&w=majority`
 
 export const connectDatabase = async (): Promise<Database> => {
   const client = await MongoClient.connect(url, {
@@ -10,11 +10,12 @@ export const connectDatabase = async (): Promise<Database> => {
     useUnifiedTopology: true,
   })
 
-  const db = client.db('main')
+  const db = client.db("main")
 
   return {
-    bookings: db.collection<Booking>('bookings'),
-    listings: db.collection<Listing>('listings'),
-    users: db.collection<User>('users'),
+    bookings: db.collection<Booking>("bookings"),
+    listings: db.collection<Listing>("listings"),
+    users: db.collection<User>("users"),
+    vouchers: db.collection<Voucher>("vouchers"),
   }
 }

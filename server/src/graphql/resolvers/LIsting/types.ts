@@ -34,6 +34,7 @@ export interface HostListingInput {
   city: string
   country: string
   numOfGuests: number
+  voucher: string
 }
 export interface HostListingArgs {
   input: HostListingInput
@@ -53,4 +54,5 @@ export interface EditListingArgs {
   city: string
   country: string
   numOfGuests: number
+  voucher: string
 }

@@ -24,6 +24,13 @@ export const typeDefs = gql`
     PRICE_HIGHEST
   }
 
+  enum VoucherType {
+    CLUB
+    RESTAURANT
+    CINEMA
+    MUSEUM
+  }
+
   type Listing {
     id: ID!
     title: String!
@@ -38,6 +45,17 @@ export const typeDefs = gql`
     bookingsIndex: String!
     price: Int!
     numOfGuests: Int!
+    voucher: Voucher
+  }
+
+  type Voucher {
+    id: ID!
+    title: String!
+    description: String!
+    image: String!
+    price: Int!
+    type: VoucherType!
+    quantity: Int!
   }
 
   type Listings {
@@ -79,6 +97,7 @@ export const typeDefs = gql`
     country: String!
     price: Int!
     numOfGuests: Int!
+    voucher: String!
   }
 
   input CreateBookingInput {
@@ -96,6 +115,7 @@ export const typeDefs = gql`
     user(id: ID!): User!
     listing(id: ID!): Listing!
     listings(filter: ListingsFilters!, limit: Int!, page: Int!): Listings!
+    voucher(id: ID!): Voucher!
   }
   input EditListingInput {
     id: String!
@@ -108,6 +128,24 @@ export const typeDefs = gql`
     country: String!
     price: Int!
     numOfGuests: Int!
+    voucher: String
+  }
+  input EditVoucherInput {
+    id: String!
+    title: String!
+    description: String!
+    image: String!
+    price: Int!
+    type: VoucherType!
+    quantity: Int!
+  }
+  input CreateVoucherInput {
+    title: String!
+    description: String!
+    image: String!
+    price: Int!
+    type: VoucherType!
+    quantity: Int!
   }
 
   type Mutation {
@@ -118,5 +156,8 @@ export const typeDefs = gql`
     editListing(input: EditListingInput): Listing
     createBooking(input: CreateBookingInput!): Booking!
     genReport(checkIn: String, checkOut: String): [Listing]
+    createVoucher(input: CreateVoucherInput!): Boolean
+    deleteVoucher(id: String!): Boolean!
+    editVaucher(input: EditVoucherInput): Voucher
   }
 `

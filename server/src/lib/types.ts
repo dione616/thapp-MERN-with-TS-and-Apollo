@@ -12,6 +12,12 @@ export enum ListingType {
   Apartment = "APARTMENT",
   House = "HOUSE",
 }
+export enum VoucherType {
+  Club = "CLUB",
+  Restaurant = "RESTAURANT",
+  Cinema = "CINEMA",
+  Museum = "MUSEUM",
+}
 
 export interface BookingsIndexMonth {
   [key: string]: boolean
@@ -48,6 +54,7 @@ export interface Listing {
   price: number
   numOfGuests: number
   authorized?: boolean
+  voucher?: ObjectId
 }
 
 export interface User {
@@ -63,10 +70,20 @@ export interface User {
   listings: ObjectId[]
   authorized?: boolean
 }
+export interface Voucher {
+  _id: ObjectId
+  title: string
+  description: string
+  image: string
+  price: number
+  type: VoucherType
+  quantity: number
+}
 //add seller prop to specify User
 
 export interface Database {
   bookings: Collection<Booking>
   listings: Collection<Listing>
   users: Collection<User>
+  vouchers: Collection<Voucher>
 }

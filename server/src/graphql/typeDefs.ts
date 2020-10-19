@@ -116,6 +116,7 @@ export const typeDefs = gql`
     listing(id: ID!): Listing!
     listings(filter: ListingsFilters!, limit: Int!, page: Int!): Listings!
     voucher(id: ID!): Voucher!
+    vouchers(limit: Int!, page: Int!): [Voucher]!
   }
   input EditListingInput {
     id: String!

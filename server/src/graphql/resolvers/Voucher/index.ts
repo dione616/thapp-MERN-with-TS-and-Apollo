@@ -25,6 +25,28 @@ export const voucherResolvers: IResolvers = {
         throw new Error(`Failed to query voucher: ${error}`)
       }
     },
+    vouchers: async (
+      _root: undefined,
+      { limit, page }: { limit: number; page: number },
+      { db, req }: { db: Database; req: Request }
+    ): Promise<Voucher[] | null> => {
+      try {
+        let cursor = await db.vouchers.find({})
+
+        if (!cursor) {
+          throw new Error("Vouchers not found in db")
+        }
+
+        cursor.skip(page > 0 ? (page - 1) * limit : 0)
+        cursor = cursor.limit(limit)
+
+        const vouchers = await cursor.toArray()
+
+        return vouchers
+      } catch (error) {
+        throw new Error(`Failed to query vouchers: ${error}`)
+      }
+    },
   },
   Mutation: {
     createVoucher: async (

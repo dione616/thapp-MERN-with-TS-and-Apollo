@@ -67,7 +67,14 @@ export const MenuItems: React.FC<Props> = ({ viewer, setViewer }) => {
       <Item key="/host">
         <Link to="/host">
           <Icon type="home" />
-          Host
+          Host apartment
+        </Link>
+      </Item>
+
+      <Item key="/voucher">
+        <Link to="/voucher">
+          <Icon type="home" />
+          Add Voucher
         </Link>
       </Item>
       {subMenu}

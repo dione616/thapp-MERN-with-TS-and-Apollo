@@ -1,13 +1,8 @@
 import React, { useState, FormEvent } from "react"
-import { Link, Redirect } from "react-router-dom"
+import { Link, Redirect, RouteComponentProps } from "react-router-dom"
 import { useMutation } from "@apollo/react-hooks"
 import { Button, Form, Input, InputNumber, Layout, Radio, Typography, Upload, Row, Col } from "antd"
 import { Viewer } from "../../lib/types"
-import {
-  CreateVoucher as CreateVoucherData,
-  CreateVoucherVariables,
-} from "../../lib/graphql/mutations/CreateVoucher/__generated__/CreateVoucher"
-import { CREATE_VOUCHER } from "../../lib/graphql/mutations/CreateVoucher"
 import {
   EditVoucher as EditVoucherData,
   EditVoucherVariables,
@@ -15,25 +10,28 @@ import {
 import { EDIT_VOUCHER } from "../../lib/graphql/mutations/EditVoucher"
 import { displayErrorMessage, displaySuccessNotification } from "../../lib/utils"
 
-const { Content } = Layout
-const { Text, Title } = Typography
-const { Item } = Form
-
+interface MatchParams {
+  id: string
+}
 interface Props {
   viewer: Viewer
 }
 
-export const Voucher = ({ viewer }: Props) => {
-  const [createVoucher, createVaucherParams] = useMutation<CreateVoucherData, CreateVoucherVariables>(CREATE_VOUCHER, {
+const { Content } = Layout
+const { Paragraph, Title, Text } = Typography
+const { Item } = Form
+
+export const VoucherEdit = ({ viewer, match }: Props & RouteComponentProps<MatchParams>) => {
+  const [editVoucher, editVaucherParams] = useMutation<EditVoucherData, EditVoucherVariables>(EDIT_VOUCHER, {
     onError: () => {
-      displayErrorMessage("Sorry we cant create your voucher! Try again later.")
+      displayErrorMessage("Sorry we cant update your voucher! Try again later.")
     },
     onCompleted: () => {
-      displaySuccessNotification("You've successfully created your voucher!")
+      displaySuccessNotification("You've successfully updated your voucher!")
     },
   })
 
-  if (createVaucherParams.loading) {
+  if (editVaucherParams.loading) {
     return (
       <Content className="host-content">
         <div className="host__form-header">
@@ -57,36 +55,40 @@ export const Voucher = ({ viewer }: Props) => {
     )
   }
 
-  const handleCreateVoucher = (event: any) => {
+  if (editVaucherParams.data) {
+    return <Redirect to={`/vouchers`} />
+  }
+
+  const handleEditVoucher = (event: any) => {
     let values = event
 
     const input = {
       ...values,
-      price: values.price * 100,
+      price: values.price,
+      id: match.params.id,
     }
 
-    createVoucher({
+    editVoucher({
       variables: {
         input,
       },
     })
   }
-
   return (
     <Content className="voucher-menu">
       {viewer.id ? (
         <Row gutter={24} style={{ display: "flex", justifyContent: "space-between" }}>
-          <Col xs={24} lg={12}>
-            <Form layout="vertical" onFinish={handleCreateVoucher}>
+          <Col xs={24}>
+            <Form layout="vertical" onFinish={handleEditVoucher}>
               <div className="host__form-header">
                 <Title level={3} className="host__form-title">
-                  Create a voucher!
+                  Edit voucher!
                 </Title>
-                <Text type="secondary">You can create new voucher providing a data.</Text>
+                <Text type="secondary">Pass new data to modify the voucher.</Text>
               </div>
 
               <Item
-                label="Type"
+                label="Home Type"
                 name="type"
                 rules={[{ required: true, message: "CINEMA OR RESTAURANT OR MUSEUM OR CLUB" }]}
               >
@@ -154,7 +156,7 @@ export const Voucher = ({ viewer }: Props) => {
 
               <Item>
                 <Button type="primary" htmlType="submit">
-                  Create
+                  Update
                 </Button>
               </Item>
             </Form>

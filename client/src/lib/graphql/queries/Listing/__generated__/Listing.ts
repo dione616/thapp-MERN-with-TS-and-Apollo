@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { ListingType } from "./../../../globalTypes";
+import { ListingType, VoucherType } from "./../../../globalTypes";
 
 // ====================================================
 // GraphQL query operation: Listing
@@ -38,6 +38,16 @@ export interface Listing_listing_bookings {
   result: Listing_listing_bookings_result[];
 }
 
+export interface Listing_listing_voucher {
+  __typename: "Voucher";
+  id: string;
+  title: string;
+  description: string;
+  price: number;
+  quantity: number;
+  type: VoucherType;
+}
+
 export interface Listing_listing {
   __typename: "Listing";
   id: string;
@@ -52,6 +62,7 @@ export interface Listing_listing {
   bookingsIndex: string;
   price: number;
   numOfGuests: number;
+  voucher: Listing_listing_voucher | null;
 }
 
 export interface Listing {
